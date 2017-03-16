@@ -1,83 +1,51 @@
-package pkgLibrary;
+package pkgEmpty;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.*;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+import org.junit.Test;
 
-public class Catalog {
+import pkgLibrary.*;
 
-	@XmlAttribute
-	int id;	
-	
-	@XmlElement(name="book")
-	ArrayList<Book> books;
-	
-	
-	public int getId() {
-		return id;
-	}
-	
+import pkgLibrary.Catalog;
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	public ArrayList<Book> getBooks() {
-		return books;
-	}
-	
+public class Catalog_Test {
 
-	public void setBooks(ArrayList<Book> books) {
-		this.books = books;
-	}
-	
-
-	public Book GetBook(String id) throws BookException{
-		Book tempBook = null;
+	@Test (expected = BookException.class)
+	public void testGetBook() throws BookException {
 		
-			for(Book bk : books){
-				if(bk.getId().equals(id))
-					tempBook= bk;
-			}
-		if (tempBook==null){
-			tempBook=new Book(id);
-			throw new BookException(tempBook);
-		}
-		else{
-			return tempBook;
-		}
+		Catalog cat = ReadXMLFile();
+		cat.GetBook("bk001");
+	}
+	
+	@Test
+	public void testGetBook2() throws BookException {
 		
+		Catalog cat = ReadXMLFile();
+		cat.GetBook("bk101");
 	}
 	
-	public void AddBook(int id, Book book) {
-		try{
-			Catalog cat = ReadXMLFile();
-			if (id == cat.getId()) {
-			for(int i = 0; i < cat.getBooks().size(); i++){
-				if(book.getId().equals(cat.getBooks().get(i).getId())) {
-					System.out.println("Book already exists");
-					throw new BookException(book);
-				}
-				
-			}
-			
-			cat.getBooks().add(book);
-			
-			
-			}
-		}
-		catch(BookException e){
-			
-		}
+	@Test (expected = BookException.class)
+	public void testAddBook() throws BookException {
+		
+		Catalog cat = ReadXMLFile();
+		Book b = new Book("bk101");
+		cat.AddBook(0, b);
 	}
 	
+	@Test
+	public void testAddBook2() throws BookException {
+		
+		Catalog cat = ReadXMLFile();
+		Book b = new Book("bk001");
+		cat.AddBook(0, b);;
+	}
+	
+
 	private static void WriteXMLFile(Catalog cat) {
 		try {
 
@@ -90,7 +58,7 @@ public class Catalog {
 
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-			jaxbMarshaller.marshal(cat, file);
+			jaxbMarshaller.marshal(cat, file); //test
 			jaxbMarshaller.marshal(cat, System.out);
 
 		} catch (JAXBException e) {
@@ -117,6 +85,4 @@ public class Catalog {
 		}
 		return cat;
 	}
-	
-	
 }

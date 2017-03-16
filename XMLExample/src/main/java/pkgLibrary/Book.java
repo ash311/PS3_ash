@@ -1,12 +1,17 @@
 package pkgLibrary;
 
-import java.util.Date;
-
+import java.util.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.File;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
-public class Book {
+
+public class Book{
 
 	private String id;
 	private String author;
@@ -15,12 +20,14 @@ public class Book {
 	private double price;
 	private Date publish_date;
 	private String description;
+	private double cost;
 
 	public Book() {
 
 	}
 
-	public Book(String id, String author, String title, String genre, double price, Date publish_date, String description)
+
+	public Book(String id, String author, String title, String genre, double price, Date publish_date, String description, double cost)
 	{
 		super();
 		this.id = id;
@@ -30,9 +37,15 @@ public class Book {
 		this.price = price;
 		this.publish_date = publish_date;
 		this.description = description;
+		this.cost = cost;
 	}
 	
  
+
+	public Book(String id) {
+		this(id,"","", "", 0,new Date(), "", 0);
+	}
+
 
 	public String getId() {
 		return id;
@@ -97,7 +110,17 @@ public class Book {
 		this.description = description;
 	}
 
+	public double getCost() {
+		return cost;
+	}
+	
+	@XmlElement
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
 	
 	
+	
+
 
 }

@@ -1,83 +1,37 @@
-package pkgLibrary;
+package pkgEmpty;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.*;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+import org.junit.Test;
 
-public class Catalog {
+import pkgLibrary.Book;
+import pkgLibrary.Catalog;
 
-	@XmlAttribute
-	int id;	
-	
-	@XmlElement(name="book")
-	ArrayList<Book> books;
-	
-	
-	public int getId() {
-		return id;
-	}
-	
+public class Book_Test {
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	public ArrayList<Book> getBooks() {
-		return books;
-	}
-	
-
-	public void setBooks(ArrayList<Book> books) {
-		this.books = books;
-	}
-	
-
-	public Book GetBook(String id) throws BookException{
-		Book tempBook = null;
+	@Test
+	public void test() {
 		
-			for(Book bk : books){
-				if(bk.getId().equals(id))
-					tempBook= bk;
-			}
-		if (tempBook==null){
-			tempBook=new Book(id);
-			throw new BookException(tempBook);
-		}
-		else{
-			return tempBook;
-		}
+		Book book = new Book();
+		book.setAuthor("Snoopy");
+		book.setPrice(25);
+		book.setCost(15);
+		book.setDescription("Piloting planes has never been made easier");
+		book.setGenre("Non-Fiction");
+		book.setId("bk900");
+		Date d = new Date();
+		book.setPublish_date(d);
+		book.setTitle("The Flying Ace");
 		
+		Book book2 = new Book("bk900", "Snoopy", "The Flying Ace", "Non-Fiction", 25, d, "Piloting planes has never been made easier", 10);
 	}
-	
-	public void AddBook(int id, Book book) {
-		try{
-			Catalog cat = ReadXMLFile();
-			if (id == cat.getId()) {
-			for(int i = 0; i < cat.getBooks().size(); i++){
-				if(book.getId().equals(cat.getBooks().get(i).getId())) {
-					System.out.println("Book already exists");
-					throw new BookException(book);
-				}
-				
-			}
-			
-			cat.getBooks().add(book);
-			
-			
-			}
-		}
-		catch(BookException e){
-			
-		}
-	}
-	
+
 	private static void WriteXMLFile(Catalog cat) {
 		try {
 
@@ -117,6 +71,5 @@ public class Catalog {
 		}
 		return cat;
 	}
-	
-	
+
 }
